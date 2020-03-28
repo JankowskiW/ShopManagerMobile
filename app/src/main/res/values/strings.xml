@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">Shop Manager Mobile</string>
+    <string name="app_name">Shop</string>
+
+    /* LOGIN AND REGISTER FORMS */
+    <string name="tvLoginText">Sign in</string>
+    <string name="tvRegisterText">Sign up</string>
+    <string name="etUserNameHint">User Name</string>
+    <string name="etPasswordHint">Password</string>
+    <string name="etPasswordConfirmationHint">Confirm password</string>
+    <string name="etEmailHint">Email address</string>
+    <string name="btnLoginText">Log in</string>
+    <string name="btnRegisterText">Create account</string>
+    <string name="btnCreateAccText">Join us!</string>
+    <string name="tvLoginNoAccount">Don\'t have an account?</string>
+
 </resources>
