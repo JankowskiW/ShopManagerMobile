@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import com.wj.shopmanagermobile.Contract.IRegisterContract
 import com.wj.shopmanagermobile.Presenter.LoginPresenter
 import com.wj.shopmanagermobile.Presenter.RegisterPresenter
 import com.wj.shopmanagermobile.R
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(), IRegisterContract.View {
 
     lateinit var btnRegister : Button
     lateinit var etUserName : EditText
@@ -22,7 +24,7 @@ class RegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        registerPresenter = RegisterPresenter()
+        registerPresenter = RegisterPresenter(this)
 
         btnRegister = findViewById(R.id.btnRegister_activity_register) as Button
         etUserName = findViewById(R.id.etUserName_activity_register) as EditText
@@ -33,5 +35,13 @@ class RegisterActivity : AppCompatActivity() {
         btnRegister.setOnClickListener {
             registerPresenter.signUp(etUserName, etEmail, etPassword, etPasswordConfirmation)
         }
+    }
+
+    override fun userRegistered(result : String?) {
+        var tvTemporary = findViewById(R.id.tvTemporary) as TextView
+        println("=============================================================")
+        println(result)
+        println("=============================================================")
+        tvTemporary.text = result
     }
 }
