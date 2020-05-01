@@ -2,18 +2,32 @@ package com.wj.shopmanagermobile.Presenter
 
 import android.os.AsyncTask
 import android.widget.EditText
-import com.wj.shopmanagermobile.Helper.getHttpMethod
+import com.wj.shopmanagermobile.Contract.ILoginContract
+import com.wj.shopmanagermobile.Helper.HttpResponse
+import com.wj.shopmanagermobile.Model.User
 
-class LoginPresenter {
+class LoginPresenter : ILoginContract.Presenter {
+
+
+    var user : User
+    var contractView : ILoginContract.View
 
     init {
-        // init jest wykonywany przed wykonaniem każdego konstruktora
+        user = User()
+    }
+
+    constructor(contractView : ILoginContract.View) {
+        this.contractView = contractView
     }
 
     fun signIn(etUserName: EditText, etPassword: EditText) {
         if (userNameValidation(etUserName) && passwordValidation(etPassword))
         {
-            LoginTask().execute()
+            var userName = etUserName.text.toString().trim()
+            var password = etPassword.text.toString().trim()
+            user.Usr_Name = userName
+            user.Usr_Password = password
+            LoginTask(this).execute(user)
         }
 //        return (userNameValidation(etUserName) && passwordValidation(etPassword))
     }
@@ -34,17 +48,35 @@ class LoginPresenter {
         return true
     }
 
-    class LoginTask() : AsyncTask<Void, Void, Void>() {
+    class LoginTask() : AsyncTask<User, Void, HttpResponse?>() {
+        lateinit var loginPresenter: LoginPresenter
+
+        constructor(loginPresenter : LoginPresenter) : this() {
+            this.loginPresenter = loginPresenter
+        }
         override fun onPreExecute() {
             super.onPreExecute()
         }
 
-        override fun doInBackground(vararg params: Void?): Void? {
-            return null
+        override fun doInBackground(vararg users: User?): HttpResponse? {
+
+            var httpResponse : HttpResponse? = users[0]?.login()
+            return httpResponse
+//            var stringResult = users[0]?.login()
+//            println(stringResult)
+//            // make gsonBody from hashMap<key, value>
+////            var jsonResult = users[0].login(gsonBody)
+//            return null
         }
 
-        override fun onPostExecute(result: Void?) {
-            super.onPostExecute(result)
+        override fun onPostExecute(httpResponse: HttpResponse?) {
+            super.onPostExecute(httpResponse)
+            if(httpResponse?.responseCode == 200) {
+                var userName = httpResponse?.jsonResponseBody.getString("Usr_Login")
+                loginPresenter.contractView.userLoggedIn(userName)
+            } else if(httpResponse?.responseCode == 401) {
+                loginPresenter.contractView.userNotLoggedIn(httpResponse?.jsonResponseBody.getString("Usr_Login"))
+            }
         }
     }
 }

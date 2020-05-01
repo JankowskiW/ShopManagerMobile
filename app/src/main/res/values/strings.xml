@@ -4,6 +4,7 @@
     /* LOGIN AND REGISTER FORMS */
     <string name="tvLoginText">Sign in</string>
     <string name="tvRegisterText">Sign up</string>
+    <string name="tvLoginNoAccount">Don\'t have an account?</string>
     <string name="etUserNameHint">User Name</string>
     <string name="etPasswordHint">Password</string>
     <string name="etPasswordConfirmationHint">Confirm password</string>
@@ -11,6 +12,11 @@
     <string name="btnLoginText">Log in</string>
     <string name="btnRegisterText">Create account</string>
     <string name="btnCreateAccText">Join us!</string>
-    <string name="tvLoginNoAccount">Don\'t have an account?</string>
+
+    /* MAIN MENU FORM */
+    <string name="tvLoggedUser">Logged in as: </string>
+    <string name="btnShop">Shop</string>
+    <string name="btnWarehouse">Warehouse</string>
+    <string name="btnAdminPanel">Admin Panel</string>
 
 </resources>

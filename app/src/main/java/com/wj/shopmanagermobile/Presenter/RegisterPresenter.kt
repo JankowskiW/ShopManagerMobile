@@ -1,12 +1,10 @@
 package com.wj.shopmanagermobile.Presenter
 
-import android.app.Activity
-import android.content.Context
 import android.os.AsyncTask
 import android.util.Patterns
-import android.view.View
 import android.widget.EditText
 import com.wj.shopmanagermobile.Contract.IRegisterContract
+import com.wj.shopmanagermobile.Helper.HttpResponse
 import com.wj.shopmanagermobile.Model.User
 
 class RegisterPresenter : IRegisterContract.Presenter {
@@ -19,11 +17,10 @@ class RegisterPresenter : IRegisterContract.Presenter {
     // .{8, 30}         -   at least 8 and maximum 30 of any signs
     val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=\\S+$).{8,30}$".toRegex()
 
-    lateinit var user : User
-    lateinit var contractView : IRegisterContract.View
+    var user : User
+    var contractView : IRegisterContract.View
 
     init {
-        // init jest wykonywany przed wykonaniem każdego konstruktora
         user = User()
     }
 
@@ -31,15 +28,22 @@ class RegisterPresenter : IRegisterContract.Presenter {
         this.contractView = contractView
     }
 
-    public fun signUp(etUserName: EditText, etEmail: EditText, etPassword: EditText, etPasswordConfirmation: EditText) {
-        RegisterTask(this).execute(user)
-//        emailAddressValidation(etEmail)
-//        userNameValidation(etUserName)
-//        passwordValidation(etPassword, etPasswordConfirmation)
+//    fun signUp(etUserName: EditText, etEmail: EditText, etPassword: EditText, etPasswordConfirmation: EditText) {
+    fun signUp(etUserName: EditText, etPassword: EditText, etPasswordConfirmation: EditText) {
+
+//        if( emailAddressValidation(etEmail) && userNameValidation(etUserName) &&
+//            passwordValidation(etPassword, etPasswordConfirmation)) {
+        if(userNameValidation(etUserName) && passwordValidation(etPassword, etPasswordConfirmation)) {
+            var userName = etUserName.text.toString().trim()
+            var password = etPassword.text.toString().trim()
+            user.Usr_Name = userName
+            user.Usr_Password = password
+            RegisterTask(this).execute(user)
+        }
     }
 
     private fun emailAddressValidation(emailAddress: EditText) : Boolean {
-        if(!Patterns.EMAIL_ADDRESS.matcher(emailAddress.text.toString()).matches()) {
+        if(!Patterns.EMAIL_ADDRESS.matcher(emailAddress.text.toString().trim()).matches()) {
             emailAddress.setError("Email address is invalid.")
             return false
         }
@@ -55,12 +59,12 @@ class RegisterPresenter : IRegisterContract.Presenter {
     }
 
     private fun passwordValidation(password: EditText, passwordConfirmation: EditText) : Boolean {
-        if(!PASSWORD_PATTERN.matches(password.text.toString())){
+        if(!PASSWORD_PATTERN.matches(password.text.toString().trim())){
             password.setError("Password must be between 8 and 30 characters, must contain at least: one digit, one " +
                     "lower case letter, one upper case letter and one special character. No whitespaces allowed.")
             return false
         }
-        if(!password.text.toString().equals(passwordConfirmation.text.toString())) {
+        if(!password.text.toString().trim().equals(passwordConfirmation.text.toString().trim())) {
             passwordConfirmation.setError("Passwords do not match.")
             return false
         }
@@ -69,7 +73,7 @@ class RegisterPresenter : IRegisterContract.Presenter {
 
 
 
-    class RegisterTask() : AsyncTask<User, Void, String?>() {
+    class RegisterTask() : AsyncTask<User, Void, HttpResponse?>() {
         lateinit var registerPresenter : RegisterPresenter
 
         constructor(registerPresenter : RegisterPresenter) : this() {
@@ -80,14 +84,21 @@ class RegisterPresenter : IRegisterContract.Presenter {
             super.onPreExecute()
         }
 
-        override fun doInBackground(vararg users: User): String? {
-            var jsonResult : String? = users[0]?.register()
-            return jsonResult
+        override fun doInBackground(vararg users: User): HttpResponse? {
+
+            var httpResponse : HttpResponse? = users[0]?.register()
+            return httpResponse
         }
 
-        override fun onPostExecute(jsonResult: String?) {
-            super.onPostExecute(jsonResult)
-            registerPresenter.contractView.userRegistered(jsonResult)
+        override fun onPostExecute(httpResponse: HttpResponse?) {
+            super.onPostExecute(httpResponse)
+            if(httpResponse?.responseCode == 201) {
+                var userLogin = httpResponse?.jsonResponseBody.getString("Usr_Login")
+                registerPresenter.contractView.userRegistered(userLogin)
+            } else if(httpResponse?.responseCode == 409) {
+
+                registerPresenter.contractView.userExists(httpResponse?.jsonResponseBody.getString("Usr_Login"))
+            }
         }
     }
 }

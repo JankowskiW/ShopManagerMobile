@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".View.MainMenuActivity">
+
+
+    <TextView
+        android:id="@+id/tvLoggedUser_activity_main_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:textColor="@color/colorMainText"
+        android:padding="5dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="15dp"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+    <Button
+        android:id="@+id/btnLogout_activity_main_menu"
+        android:text="LO"
+        android:textSize="20dp"
+        android:textAllCaps="false"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/btn_main"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/btnSettings_activity_main_menu"/>
+
+    <Button
+        android:id="@+id/btnSettings_activity_main_menu"
+        android:text="S"
+        android:textSize="20dp"
+        android:textAllCaps="false"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/btn_main"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/llMainMenuLayout_activity_main_menu"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:background="@color/colorBackground"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="50dp"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toBottomOf="@id/tvLoggedUser_activity_main_menu"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/btnShop_activity_main_menu"
+            android:text="@string/btnShop"
+            android:textSize="20dp"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_main"/>
+
+        <Button
+            android:id="@+id/btnWarehouse_activity_main_menu"
+            android:text="@string/btnWarehouse"
+            android:textSize="20dp"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_main"/>
+
+        <Button
+            android:id="@+id/btnAdminPanel_activity_main_menu"
+            android:text="@string/btnAdminPanel"
+            android:textSize="20dp"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:layout_weight="1"
+            android:background="@drawable/btn_main"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

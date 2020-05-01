@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import com.wj.shopmanagermobile.Contract.ILoginContract
 import com.wj.shopmanagermobile.Presenter.LoginPresenter
 import com.wj.shopmanagermobile.R
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), ILoginContract.View {
 
     lateinit var btnLogin : Button
     lateinit var btnCreateAcc : Button
@@ -23,7 +25,7 @@ class LoginActivity : AppCompatActivity() {
 
         val intentRegisterActivity = Intent(this, RegisterActivity::class.java)
 
-        loginPresenter = LoginPresenter()
+        loginPresenter = LoginPresenter(this)
 
         btnLogin = findViewById(R.id.btnLogin_activity_login) as Button
         btnCreateAcc = findViewById(R.id.btnCreateAcc_activity_login) as Button
@@ -40,5 +42,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
 
+    override fun userLoggedIn(userName : String?) {
+        val intentMainMenuActivity = Intent(this, MainMenuActivity::class.java)
+        startActivity(intentMainMenuActivity)
+        Toast.makeText(this,"User "+userName+" logged in.", Toast.LENGTH_LONG).show()
+    }
+
+    override fun userNotLoggedIn(result : String?) {
+        Toast.makeText(this,"Wrong user name or password.", Toast.LENGTH_LONG).show()
+    }
 
 }

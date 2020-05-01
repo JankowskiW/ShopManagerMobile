@@ -6,6 +6,7 @@ interface IRegisterContract {
     }
 
     interface View {
-        fun userRegistered(result : String?)
+        fun userRegistered(userName: String)
+        fun userExists(userName : String)
     }
 }
